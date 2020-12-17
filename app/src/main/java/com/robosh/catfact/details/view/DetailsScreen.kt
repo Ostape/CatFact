@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.robosh.catfact.application.toObservableList
 import com.robosh.catfact.databinding.FragmentDetailsBinding
@@ -15,7 +16,7 @@ import com.robosh.catfact.net.RetrofitClientInstance
 import com.robosh.catfact.net.RetrofitInstance2
 import com.robosh.catfact.net.api.CatFactApi
 import com.robosh.catfact.net.api.CatImageApi
-import com.robosh.catfact.net.repository.CatMockRepostitory
+import com.robosh.catfact.net.repository.CatFactRepositoryImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -79,9 +80,9 @@ class DetailsScreen : Fragment(),
             adapter = catFactsAdapter
             layoutManager = LinearLayoutManager(this@DetailsScreen.requireContext())
         }
-        viewModel.getCatFacts()
-
-        catFactsAdapter.setData(CatMockRepostitory().getCatFacts())
+        viewModel.getCatFacts().observe(viewLifecycleOwner, Observer {
+            catFactsAdapter.setData(it)
+        })
     }
 
     override fun createOnClickListener(catFact: CatFact) {
