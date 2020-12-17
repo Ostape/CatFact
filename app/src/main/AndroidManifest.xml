@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.robosh.catfact">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".application.RoboshApplication"
         android:allowBackup="true"

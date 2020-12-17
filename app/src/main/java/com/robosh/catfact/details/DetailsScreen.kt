@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.robosh.catfact.api.CatImageApi
 import com.robosh.catfact.databinding.FragmentDetailsBinding
 import com.robosh.catfact.model.CatFact
+import com.robosh.catfact.net.RetrofitClientInstance
 import com.robosh.catfact.repository.CatMockRepostitory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class DetailsScreen : Fragment(), CatFactClickListenerFactory {
 
@@ -19,6 +23,12 @@ class DetailsScreen : Fragment(), CatFactClickListenerFactory {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         catFactsAdapter = CatFactsAdapter(this)
+        RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java).getImageFile()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.d("TAGGERR", it.toString())
+            }
     }
 
     override fun onCreateView(
