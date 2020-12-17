@@ -1,4 +1,4 @@
-package com.robosh.catfact.details
+package com.robosh.catfact.details.view
 
 import android.os.Bundle
 import android.util.Log
@@ -9,16 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.robosh.catfact.api.CatImageApi
 import com.robosh.catfact.databinding.FragmentDetailsBinding
+import com.robosh.catfact.details.viewmodel.DetailsViewModel
 import com.robosh.catfact.model.CatFact
 import com.robosh.catfact.net.RetrofitClientInstance
 import com.robosh.catfact.repository.CatMockRepostitory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class DetailsScreen : Fragment(), CatFactClickListenerFactory {
+class DetailsScreen : Fragment(),
+    CatFactClickListenerFactory {
 
     private lateinit var catFactsAdapter: CatFactsAdapter
     private lateinit var binding: FragmentDetailsBinding
+    private val viewModel: DetailsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,7 @@ class DetailsScreen : Fragment(), CatFactClickListenerFactory {
             adapter = catFactsAdapter
             layoutManager = LinearLayoutManager(this@DetailsScreen.requireContext())
         }
+        viewModel.getCatFacts()
 
         catFactsAdapter.setData(CatMockRepostitory().getCatFacts())
     }

@@ -1,4 +1,4 @@
-package com.robosh.catfact.details
+package com.robosh.catfact.details.view
 
 import com.robosh.catfact.model.CatFact
 

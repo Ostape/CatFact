@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/detailsScreen"
-        android:name="com.robosh.catfact.details.DetailsScreen"
+        android:name="com.robosh.catfact.details.view.DetailsScreen"
         android:label="DetailsScreen" />
 
 </navigation>

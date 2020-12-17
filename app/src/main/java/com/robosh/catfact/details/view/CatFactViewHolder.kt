@@ -1,4 +1,4 @@
-package com.robosh.catfact.details
+package com.robosh.catfact.details.view
 
 import android.view.LayoutInflater
 import android.view.View
