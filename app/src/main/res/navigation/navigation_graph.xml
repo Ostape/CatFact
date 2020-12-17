@@ -8,6 +8,14 @@
         android:id="@+id/homeScreenFragment"
         android:name="com.robosh.catfact.home.HomeScreen"
         android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeScreenFragment_to_detailsScreen"
+            app:destination="@id/detailsScreen" />
     </fragment>
+
+    <fragment
+        android:id="@+id/detailsScreen"
+        android:name="com.robosh.catfact.details.DetailsScreen"
+        android:label="DetailsScreen" />
 
 </navigation>
