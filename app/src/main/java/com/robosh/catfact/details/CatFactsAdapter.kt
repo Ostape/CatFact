@@ -5,16 +5,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.robosh.catfact.model.CatFact
 
 class CatFactsAdapter(
-//    private val clickListener: BookNoteClickListenerFactory
+    private val clickListener: CatFactClickListenerFactory
 ) : RecyclerView.Adapter<CatFactViewHolder>() {
 
     private val catFacts = ArrayList<CatFact>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatFactViewHolder {
-        return CatFactViewHolder.create(
-            parent
-//            , clickListener
-        )
+        return CatFactViewHolder.create(parent, clickListener)
     }
 
     override fun getItemCount() = catFacts.size

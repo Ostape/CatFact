@@ -9,32 +9,28 @@ import com.robosh.catfact.databinding.ViewHolderCatFactBinding
 import com.robosh.catfact.model.CatFact
 
 class CatFactViewHolder private constructor(
-    view: View
-//    ,
-//    private val clickListener: BookNoteClickListenerFactory
+    view: View,
+    private val clickListener: CatFactClickListenerFactory
 ) : RecyclerView.ViewHolder(view) {
 
     companion object {
         fun create(
-            parent: ViewGroup
-//            ,
-//            clickListener: BookNoteClickListenerFactory
+            parent: ViewGroup, clickListener: CatFactClickListenerFactory
         ): CatFactViewHolder {
             return CatFactViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.view_holder_cat_fact, parent, false)
-//                , clickListener
+                    .inflate(R.layout.view_holder_cat_fact, parent, false), clickListener
             )
         }
     }
 
     private val binding: ViewHolderCatFactBinding = ViewHolderCatFactBinding.bind(view)
 
-    fun bind(bookNote: CatFact) {
+    fun bind(catFact: CatFact) {
         with(binding) {
 //            catFactImage.setImageURI()
-            catFactDescription.text = bookNote.description
-//            bookNoteItem.setOnClickListener(clickListener.createOnClickListener(bookNote))
+            catFactDescription.text = catFact.description
+            catFactViewHolderItem.setOnClickListener { clickListener.createOnClickListener(catFact) }
         }
     }
 }
