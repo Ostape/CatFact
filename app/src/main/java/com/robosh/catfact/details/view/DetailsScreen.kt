@@ -32,36 +32,6 @@ class DetailsScreen : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         catFactsAdapter = CatFactsAdapter(this)
-
-//        RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java).getImageFile()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe {
-//                Log.d("TAGGERR", it.toString())
-//            }
-
-        RetrofitInstance2.retrofitInstance!!.create(CatFactApi::class.java).getCatFacts()
-            .flatMap {
-                it.map { catFact ->
-                    RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java)
-                        .getImageFile().map {
-                            Observable.just(CatFact(it.file, catFact.text!!))
-                        }
-                        .onErrorReturn {
-                            Observable.just(CatFact("", catFact.text!!))
-                        }
-                        .blockingFirst()
-
-                }.toObservableList()
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("TAGGERR", it.toString())
-            }, {
-                Log.d("TAGGERR", it.toString())
-            }
-            )
     }
 
     override fun onCreateView(

@@ -1,24 +1,38 @@
 package com.robosh.catfact.net.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import com.robosh.catfact.application.toObservableList
 import com.robosh.catfact.model.CatFact
+import com.robosh.catfact.net.RetrofitClientInstance
+import com.robosh.catfact.net.RetrofitInstance2
+import com.robosh.catfact.net.api.CatFactApi
+import com.robosh.catfact.net.api.CatImageApi
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 
 class CatFactRepositoryImpl : CatFactRepository {
 
     override fun getCatFacts(): LiveData<List<CatFact>> {
-        return MutableLiveData<List<CatFact>>().apply {
-            postValue(
-                mutableListOf(
-                    CatFact("asdsa", "1sadasdas"),
-                    CatFact("asds", "1ssadfasafdasd"),
-                    CatFact("asds", "1safdassadasd"),
-                    CatFact("asds", "1safda21esd"),
-                    CatFact("asds", "4235safdasd"),
-                    CatFact("asds", "21safdasd"),
-                    CatFact("asds", "sdfasdsafdasd")
-                )
-            )
-        }
+
+        val subscribe =
+            RetrofitInstance2.retrofitInstance!!.create(CatFactApi::class.java).getCatFacts()
+                .flatMap {
+                    it.map { catFact ->
+                        RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java)
+                            .getImageFile().map {
+                                Observable.just(CatFact(it.file, catFact.text!!))
+                            }
+                            .onErrorReturn {
+                                Observable.just(CatFact("", catFact.text!!))
+                            }
+                            .blockingFirst()
+
+                    }.toObservableList()
+                }
+                .subscribeOn(Schedulers.io())
+
+        return LiveDataReactiveStreams.fromPublisher(subscribe.toFlowable(BackpressureStrategy.DROP))
     }
 }
