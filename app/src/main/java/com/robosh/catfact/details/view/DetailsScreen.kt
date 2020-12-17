@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.robosh.catfact.api.CatImageApi
+import com.robosh.catfact.application.toObservableList
 import com.robosh.catfact.databinding.FragmentDetailsBinding
 import com.robosh.catfact.details.viewmodel.DetailsViewModel
 import com.robosh.catfact.model.CatFact
 import com.robosh.catfact.net.RetrofitClientInstance
+import com.robosh.catfact.net.RetrofitInstance2
+import com.robosh.catfact.net.api.CatFactApi
+import com.robosh.catfact.net.api.CatImageApi
 import com.robosh.catfact.repository.CatMockRepostitory
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -27,12 +31,36 @@ class DetailsScreen : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         catFactsAdapter = CatFactsAdapter(this)
-        RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java).getImageFile()
+
+//        RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java).getImageFile()
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe {
+//                Log.d("TAGGERR", it.toString())
+//            }
+
+        RetrofitInstance2.retrofitInstance!!.create(CatFactApi::class.java).getCatFacts()
+            .flatMap {
+                it.map { catFact ->
+                    RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java)
+                        .getImageFile().map {
+                            Observable.just(CatFact(it.file, catFact.text!!))
+                        }
+                        .onErrorReturn {
+                            Observable.just(CatFact("", catFact.text!!))
+                        }
+                        .blockingFirst()
+
+                }.toObservableList()
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
+                Log.d("TAGGERR", it.toString())
+            }, {
                 Log.d("TAGGERR", it.toString())
             }
+            )
     }
 
     override fun onCreateView(

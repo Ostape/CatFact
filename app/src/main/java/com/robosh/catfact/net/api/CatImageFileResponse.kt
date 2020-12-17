@@ -1,4 +1,4 @@
-package com.robosh.catfact.api
+package com.robosh.catfact.net.api
 
 import com.google.gson.annotations.SerializedName
 
