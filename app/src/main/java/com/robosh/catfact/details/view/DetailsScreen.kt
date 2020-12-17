@@ -15,7 +15,7 @@ import com.robosh.catfact.net.RetrofitClientInstance
 import com.robosh.catfact.net.RetrofitInstance2
 import com.robosh.catfact.net.api.CatFactApi
 import com.robosh.catfact.net.api.CatImageApi
-import com.robosh.catfact.repository.CatMockRepostitory
+import com.robosh.catfact.net.repository.CatMockRepostitory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

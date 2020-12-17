@@ -1,4 +1,4 @@
-package com.robosh.catfact.repository
+package com.robosh.catfact.net.repository
 
 import com.robosh.catfact.model.CatFact
 
