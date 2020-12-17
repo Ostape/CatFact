@@ -1,9 +1,9 @@
 package com.robosh.catfact.net.repository
 
 import androidx.lifecycle.LiveData
-import com.robosh.catfact.model.CatFact
+import com.robosh.catfact.model.ResultState
 
 interface CatFactRepository {
 
-    fun getCatFacts(): LiveData<List<CatFact>>
+    fun getCatFacts(): LiveData<ResultState>
 }

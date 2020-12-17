@@ -8,18 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.robosh.catfact.application.toObservableList
 import com.robosh.catfact.databinding.FragmentDetailsBinding
 import com.robosh.catfact.details.viewmodel.DetailsViewModel
 import com.robosh.catfact.model.CatFact
-import com.robosh.catfact.net.RetrofitClientInstance
-import com.robosh.catfact.net.RetrofitInstance2
-import com.robosh.catfact.net.api.CatFactApi
-import com.robosh.catfact.net.api.CatImageApi
-import com.robosh.catfact.net.repository.CatFactRepositoryImpl
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.robosh.catfact.model.ResultState
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsScreen : Fragment(),
@@ -50,9 +42,19 @@ class DetailsScreen : Fragment(),
             adapter = catFactsAdapter
             layoutManager = LinearLayoutManager(this@DetailsScreen.requireContext())
         }
-        viewModel.getCatFacts().observe(viewLifecycleOwner, Observer {
-            catFactsAdapter.setData(it)
+        viewModel.state.observe(viewLifecycleOwner, Observer {
+            if (it is ResultState.DataListState) {
+                catFactsAdapter.setData(it.data)
+                Log.d("TAGGERR", it.data.toString())
+            }
+            if (it is ResultState.ErrorState) {
+                Log.d("TAGGERR", it.data)
+            }
+            if (it is ResultState.LoadingState) {
+                Log.d("TAGGERR", "Loafing")
+            }
         })
+        viewModel.processAction()
     }
 
     override fun createOnClickListener(catFact: CatFact) {
