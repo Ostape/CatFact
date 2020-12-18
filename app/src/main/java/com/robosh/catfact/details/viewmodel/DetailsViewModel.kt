@@ -21,8 +21,12 @@ class DetailsViewModel(
         get() = _state as LiveData<ResultState>
 
     fun processAction() {
-        _state.addSource(catFactRepository.getCatFacts()) {
-            _state.postValue(it)
+        if (_state.value !is ResultState.DataListState) {
+            val source = catFactRepository.getCatFacts()
+            _state.addSource(source) {
+                _state.postValue(it)
+                _state.removeSource(source)
+            }
         }
     }
 }

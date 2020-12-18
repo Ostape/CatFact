@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -45,12 +47,14 @@ class DetailsScreen : Fragment(),
         viewModel.state.observe(viewLifecycleOwner, Observer {
             if (it is ResultState.DataListState) {
                 catFactsAdapter.setData(it.data)
+                binding.progressBar.visibility = GONE
                 Log.d("TAGGERR", it.data.toString())
             }
             if (it is ResultState.ErrorState) {
                 Log.d("TAGGERR", it.data)
             }
             if (it is ResultState.LoadingState) {
+                binding.progressBar.visibility = VISIBLE
                 Log.d("TAGGERR", "Loafing")
             }
         })
