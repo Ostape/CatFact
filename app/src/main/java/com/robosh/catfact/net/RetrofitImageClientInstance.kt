@@ -11,7 +11,7 @@ object RetrofitImageClientInstance {
 
     val retrofitInstance: Retrofit
         get() {
-            if (this::retrofit.isInitialized) {
+            if (this::retrofit.isInitialized.not()) {
                 retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
