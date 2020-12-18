@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.robosh.catfact.R
 import com.robosh.catfact.databinding.ViewHolderCatFactBinding
 import com.robosh.catfact.model.CatFact
@@ -28,7 +29,7 @@ class CatFactViewHolder private constructor(
 
     fun bind(catFact: CatFact) {
         with(binding) {
-//            catFactImage.setImageURI()
+            Glide.with(itemView).load(catFact.imageUrl).into(catFactImage);
             catFactDescription.text = catFact.description
             catFactViewHolderItem.setOnClickListener { clickListener.createOnClickListener(catFact) }
         }
