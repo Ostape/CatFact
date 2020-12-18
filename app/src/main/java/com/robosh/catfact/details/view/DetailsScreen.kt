@@ -1,7 +1,6 @@
 package com.robosh.catfact.details.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.robosh.catfact.databinding.FragmentDetailsBinding
+import com.robosh.catfact.details.view.CatFactDialog.Companion.TAG_DIALOG
 import com.robosh.catfact.details.viewmodel.DetailsViewModel
 import com.robosh.catfact.model.CatFact
 import com.robosh.catfact.model.ResultState
@@ -51,11 +51,11 @@ class DetailsScreen : Fragment(),
     }
 
     override fun createOnClickListener(catFact: CatFact) {
-        Log.d("TAGGER", catFact.toString())
+        CatFactDialog.newInstance(catFact).show(childFragmentManager, TAG_DIALOG)
     }
 
-    private fun processState(state: ResultState){
-        when(state) {
+    private fun processState(state: ResultState) {
+        when (state) {
             is ResultState.LoadingState -> {
                 binding.progressBar.visibility = VISIBLE
             }

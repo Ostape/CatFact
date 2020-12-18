@@ -29,7 +29,7 @@ class CatFactViewHolder private constructor(
 
     fun bind(catFact: CatFact) {
         with(binding) {
-            Glide.with(itemView).load(catFact.imageUrl).into(catFactImage);
+            Glide.with(itemView).load(catFact.imageUrl).into(catFactImage)
             catFactDescription.text = catFact.description
             catFactViewHolderItem.setOnClickListener { clickListener.createOnClickListener(catFact) }
         }
