@@ -5,11 +5,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/errorMessageBookNotes"
+        android:id="@+id/errorMessageCatFacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Error"
+        android:text="@string/oops_smth_went_wrong"
         android:textSize="@dimen/x_text_size"
         android:visibility="gone" />
 

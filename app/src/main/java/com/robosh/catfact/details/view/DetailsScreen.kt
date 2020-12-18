@@ -45,23 +45,28 @@ class DetailsScreen : Fragment(),
             layoutManager = LinearLayoutManager(this@DetailsScreen.requireContext())
         }
         viewModel.state.observe(viewLifecycleOwner, Observer {
-            if (it is ResultState.DataListState) {
-                catFactsAdapter.setData(it.data)
-                binding.progressBar.visibility = GONE
-                Log.d("TAGGERR", it.data.toString())
-            }
-            if (it is ResultState.ErrorState) {
-                Log.d("TAGGERR", it.data)
-            }
-            if (it is ResultState.LoadingState) {
-                binding.progressBar.visibility = VISIBLE
-                Log.d("TAGGERR", "Loafing")
-            }
+            processState(it)
         })
         viewModel.processAction()
     }
 
     override fun createOnClickListener(catFact: CatFact) {
         Log.d("TAGGER", catFact.toString())
+    }
+
+    private fun processState(state: ResultState){
+        when(state) {
+            is ResultState.LoadingState -> {
+                binding.progressBar.visibility = VISIBLE
+            }
+            is ResultState.DataListState -> {
+                catFactsAdapter.setData(state.data)
+                binding.progressBar.visibility = GONE
+            }
+            is ResultState.ErrorState -> {
+                binding.progressBar.visibility = GONE
+                binding.errorMessageCatFacts.visibility = VISIBLE
+            }
+        }
     }
 }

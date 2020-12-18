@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CatFact</string>
     <string name="cat_facts">Cat Facts</string>
+    <string name="oops_smth_went_wrong">Oops, smth went wrong</string>
 </resources>
