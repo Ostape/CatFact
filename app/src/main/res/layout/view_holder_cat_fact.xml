@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/catFactViewHolderItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/catFactViewHolderItem">
+    android:padding="@dimen/small_margin">
 
     <ImageView
         android:id="@+id/catFactImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:src="@drawable/ic_launcher_background" />
 
     <TextView
+        android:layout_marginStart="@dimen/small_margin"
         android:id="@+id/catFactDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Some text" />
+        android:textSize="@dimen/x_text_size"
+        tools:text="Some text" />
 </LinearLayout>
