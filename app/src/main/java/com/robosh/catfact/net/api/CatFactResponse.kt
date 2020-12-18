@@ -6,5 +6,5 @@ data class CatFactResponse(
     @SerializedName("type")
     val type: String?,
     @SerializedName("text")
-    val text: String?
+    val text: String
 )

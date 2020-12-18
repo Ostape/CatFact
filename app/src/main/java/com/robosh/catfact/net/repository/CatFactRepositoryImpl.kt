@@ -1,6 +1,5 @@
 package com.robosh.catfact.net.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import com.robosh.catfact.application.toObservableList
@@ -17,17 +16,16 @@ import io.reactivex.schedulers.Schedulers
 class CatFactRepositoryImpl : CatFactRepository {
 
     override fun getCatFacts(): LiveData<ResultState> {
-Log.d("Taggerr", "AAAAAA")
         val subscribe =
             RetrofitInstance2.retrofitInstance!!.create(CatFactApi::class.java).getCatFacts()
                 .flatMap {
-                    it.map { catFact ->
+                    it.map { catFactResponse ->
                         RetrofitClientInstance.retrofitInstance!!.create(CatImageApi::class.java)
                             .getImageFile().map {
-                                Observable.just(CatFact(it.file, catFact.text!!))
+                                Observable.just(CatFact(it.file, catFactResponse.text))
                             }
                             .onErrorReturn {
-                                Observable.just(CatFact("", catFact.text!!))
+                                Observable.just(CatFact("", catFactResponse.text))
                             }
                             .blockingFirst()
                     }.toObservableList()
@@ -37,7 +35,7 @@ Log.d("Taggerr", "AAAAAA")
                     dataListState as ResultState
                 }
                 .onErrorReturn{
-                    ResultState.ErrorState(it.localizedMessage)
+                    ResultState.ErrorState(it.localizedMessage ?: "Error in getCatFacts")
                 }
                 .subscribeOn(Schedulers.io())
 
